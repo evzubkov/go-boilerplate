@@ -1,0 +1,47 @@
+basePath: /v1
+definitions:
+  hello.ErrAnswer:
+    properties:
+      error:
+        type: string
+    type: object
+info:
+  contact:
+    email: evzubkov@inbox.ru
+    name: Ev. Zubkov
+  description: API
+  license:
+    name: Commercial
+  title: boilerplate
+  version: "1.0"
+paths:
+  /hello:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Привет
+
+        Ошибки:
+        "Internal Server Error" - что-то совсем пошло не так
+      operationId: Hello
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/hello.ErrAnswer'
+      summary: Привет
+      tags:
+      - Hello
+securityDefinitions:
+  JWTKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

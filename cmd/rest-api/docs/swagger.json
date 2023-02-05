@@ -1,0 +1,65 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API",
+        "title": "boilerplate",
+        "contact": {
+            "name": "Ev. Zubkov",
+            "email": "evzubkov@inbox.ru"
+        },
+        "license": {
+            "name": "Commercial"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/hello": {
+            "get": {
+                "description": "Привет\n\nОшибки:\n\"Internal Server Error\" - что-то совсем пошло не так",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hello"
+                ],
+                "summary": "Привет",
+                "operationId": "Hello",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/hello.ErrAnswer"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "hello.ErrAnswer": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWTKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
