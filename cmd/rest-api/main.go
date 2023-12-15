@@ -1,17 +1,14 @@
 package main
 
 import (
-	helloHandler "boilerplate/cmd/rest-api/handlers/hello"
 	"boilerplate/internal/config"
-	"boilerplate/pkg/postgresql"
+	"boilerplate/pkg/gin-middleware"
+	"boilerplate/pkg/jwt"
 	"boilerplate/pkg/redis"
-	"context"
-
+	"github.com/gin-gonic/gin"
 	"github.com/go-redis/cache/v8"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	echoSwagger "github.com/swaggo/echo-swagger"
-	lumberjack "gopkg.in/natefinch/lumberjack.v2"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"time"
 
 	"flag"
 	"log"
@@ -21,14 +18,11 @@ import (
 )
 
 var (
-	db         postgresql.Client
 	redisCache *cache.Cache
 	appConfig  config.TomlConfig
 )
 
 func init() {
-
-	var err error
 
 	// Получаем путь до конфига из командной строки
 	configPath := flag.String("config", os.Getenv("PWD")+"/configs/local.toml", "a string")
@@ -46,20 +40,8 @@ func init() {
 		Compress:   appConfig.Logger.RestAPI.Compress,
 	})
 
-	// БД
-	db, err = postgresql.NewClient(context.TODO(), 3, postgresql.ClientConfig{
-		Host:     appConfig.Postgres.Host,
-		Port:     appConfig.Postgres.Port,
-		Database: appConfig.Postgres.Database,
-		Username: appConfig.Postgres.User,
-		Password: appConfig.Postgres.Password,
-	})
-	if err != nil {
-		log.Panic(err)
-	}
-
 	// Кэш
-	redisCache = redis.NewClientCache(redis.RedisConfig{
+	redisCache = redis.NewRedisClient(redis.ConfigRedis{
 		Host:     appConfig.Redis.Host,
 		Port:     appConfig.Redis.Port,
 		Database: appConfig.Redis.Database,
@@ -78,48 +60,17 @@ func init() {
 // @BasePath /v1
 func main() {
 
-	log.Printf("\n\n\nStart app on %s:%s\n", appConfig.HTTP.Host, appConfig.HTTP.Port)
-	log.Println("Param: ")
-	log.Print(appConfig)
+	router := gin.Default()
 
-	// Echo instance
-	e := echo.New()
+	// Create a new JWT instance
+	authService := jwt.NewJwt(time.Minute, "secret")
 
-	// docs
-	e.GET("/v1/swagger/*", echoSwagger.WrapHandler)
+	// Add the JWT middleware
+	router.Use(middleware.CheckAuth(authService))
 
-	// router
-	userGroup := e.Group("/v1")
-	prepareUserRoutes(userGroup)
+	// Define your routes and handlers
 
-	// Middleware
-	e.Use(middleware.Logger())
-	e.Logger.SetOutput(log.Writer())
-	e.Use(middleware.Recover())
-	e.Use(middleware.RequestID())
-	// CORS
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-	}))
-
-	// Start server
-	e.Logger.Fatal(e.Start(appConfig.HTTP.Host + ":" + appConfig.HTTP.Port))
-}
-
-func prepareUserRoutes(grp *echo.Group) {
-	// @securityDefinitions.apiKey JWTKeyAuth
-	// @in header
-	// @name Authorization
-	/*
-		requireClaims := middleware.JWTWithConfig(middleware.JWTConfig{
-			Claims:     &utils.JwtCustomClaims{},
-			SigningKey: []byte(appConfig.JWT.Secret),
-		})
-	*/
-
-	// hello
-	hHandler := helloHandler.NewHelloHandler(db, redisCache)
-	helloGroup := grp.Group("/hello")
-	helloGroup.GET("/hello", hHandler.Hello)
-
+	if err := router.Run(":8080"); err != nil {
+		log.Panic(err)
+	}
 }

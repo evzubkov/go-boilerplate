@@ -26,7 +26,7 @@ secret = ""
 logsPath = "./"
 
 [Logger.RestApi]
-compress = true # сжимать старые логи
-maxSize = 100 # максимальный размер лога в Мб
-maxAge = 30 # срок хранения старых логов в днях
-maxBackups = 10 # максимальное кол-во файлов со старыми логами
+compress = true # compress old logs
+maxSize = 100 # maximum log size in MB
+maxAge = 30 # storage period for old logs in days
+maxBackups = 10 # maximum number of files with old logs
