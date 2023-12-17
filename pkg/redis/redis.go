@@ -15,13 +15,11 @@ type ConfigRedis struct {
 	Password string
 }
 
+// NewRedisClient creates and returns a Redis client using the provided configuration.
 func NewRedisClient(config ConfigRedis) *cache.Cache {
 	ring := redis.NewRing(&redis.RingOptions{
-		Addrs:    map[string]string{"redis": config.Host + ":" + config.Port},
-		DB:       config.Database,
-		Username: config.Username,
-		Password: config.Password,
-	})
+		Addrs: map[string]string{"redis": config.Host + ":" + config.Port},
+		DB:    config.Database, Username: config.Username, Password: config.Password})
 
 	redisCache := cache.New(&cache.Options{Redis: ring, LocalCache: cache.NewTinyLFU(1000, time.Minute)})
 
