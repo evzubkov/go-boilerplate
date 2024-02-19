@@ -1,7 +1,7 @@
 package jwt_test
 
 import (
-	"boilerplate/pkg/jwt"
+	"go-boilerplate/pkg/jwt"
 	"testing"
 	"time"
 )

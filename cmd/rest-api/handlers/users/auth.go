@@ -1,11 +1,11 @@
 package users
 
 import (
-	middleware "boilerplate/pkg/gin-middleware"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	middleware "go-boilerplate/pkg/gin-middleware"
 )
 
 type AuthRequest struct {

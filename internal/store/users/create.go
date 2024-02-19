@@ -1,7 +1,7 @@
 package users
 
 import (
-	"boilerplate/internal/store/models"
+	"go-boilerplate/internal/store/models"
 )
 
 // Create - create new user

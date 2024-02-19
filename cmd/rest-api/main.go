@@ -1,20 +1,20 @@
 package main
 
 import (
-	"boilerplate/internal/config"
-	"boilerplate/pkg/gin-middleware"
-	"boilerplate/pkg/gorm/postgresql"
-	"boilerplate/pkg/jwt"
-	"boilerplate/pkg/redis"
 	"flag"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/cache/v8"
+	"go-boilerplate/internal/config"
+	"go-boilerplate/pkg/gin-middleware"
+	"go-boilerplate/pkg/gorm/postgresql"
+	"go-boilerplate/pkg/jwt"
+	"go-boilerplate/pkg/redis"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"gorm.io/gorm"
 	"log"
 	"os"
 
-	_ "boilerplate/cmd/rest-api/docs"
+	_ "go-boilerplate/cmd/rest-api/docs"
 )
 
 var (

@@ -1,7 +1,7 @@
 package users
 
 import (
-	"boilerplate/internal/config"
+	"go-boilerplate/internal/config"
 	"gorm.io/gorm"
 )
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"boilerplate/pkg/gin-middleware"
+	"go-boilerplate/pkg/gin-middleware"
 )
 
 type mockAuth struct{}
