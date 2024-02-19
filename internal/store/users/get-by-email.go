@@ -1,6 +1,6 @@
 package users
 
-import "go-boilerplate/internal/store/models"
+import "github.com/evzubkov/go-boilerplate/internal/store/models"
 
 // GetByEmail - get user by email
 func (o *UserRepository) GetByEmail(email string) (user models.User, err error) {

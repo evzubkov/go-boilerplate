@@ -1,4 +1,4 @@
-module go-boilerplate
+module github.com/evzubkov/github.com/evzubkov/go-boilerplate
 
 go 1.17
 

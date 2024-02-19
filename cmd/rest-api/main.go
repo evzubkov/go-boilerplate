@@ -2,19 +2,19 @@ package main
 
 import (
 	"flag"
+	"github.com/evzubkov/go-boilerplate/internal/config"
+	"github.com/evzubkov/go-boilerplate/pkg/gin-middleware"
+	"github.com/evzubkov/go-boilerplate/pkg/gorm/postgresql"
+	"github.com/evzubkov/go-boilerplate/pkg/jwt"
+	"github.com/evzubkov/go-boilerplate/pkg/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/cache/v8"
-	"go-boilerplate/internal/config"
-	"go-boilerplate/pkg/gin-middleware"
-	"go-boilerplate/pkg/gorm/postgresql"
-	"go-boilerplate/pkg/jwt"
-	"go-boilerplate/pkg/redis"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"gorm.io/gorm"
 	"log"
 	"os"
 
-	_ "go-boilerplate/cmd/rest-api/docs"
+	_ "github.com/evzubkov/go-boilerplate/cmd/rest-api/docs"
 )
 
 var (
